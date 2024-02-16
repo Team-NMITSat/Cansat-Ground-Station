@@ -67,7 +67,7 @@ pressure = graph_pressure()
 temperature = graph_temperature()
 # Time graph
 time = graph_time(font=font)
-# Battery graph
+# Battery graph 
 battery = graph_battery(font=font)
 # Free fall graph
 free_fall = graph_free_fall(font=font)
@@ -76,14 +76,13 @@ free_fall = graph_free_fall(font=font)
 ## Setting the graphs in the layout 
 # Title at top
 text = """
-Flight monitoring interface for cansats and OBC's <br>
-developed at the Universidad Distrital FJC.
+Team NMITSat
 """
 Layout.addLabel(text, col=1, colspan=21)
 Layout.nextRow()
 
 # Put vertical label on left side
-Layout.addLabel('LIDER - ATL research hotbed',
+Layout.addLabel('labs',
                 angle=-90, rowspan=3)
                 
 Layout.nextRow()
@@ -132,6 +131,7 @@ def update():
         pressure.update(value_chain[4])
         temperature.update(value_chain[3])
         free_fall.update(value_chain[2])
+        battery.update("65")
         data_base.guardar(value_chain)
     except IndexError:
         print('starting, please wait a moment')

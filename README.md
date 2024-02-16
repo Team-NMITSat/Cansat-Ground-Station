@@ -5,14 +5,20 @@ Code for a CanSat or OBCs GUI ground station where different sensor data are dis
 ![imagen](https://i.imgur.com/zDY3DnY.gif)
 
 ## Table of contents
-* [Support](#support)
-* [General info](#general-info)
-* [Technologies](#technologies)
-* [Setup Linux](#setup-linux)
-* [Setup Windows](#setup-windows)
-* [How does it work?](#how-does-it-work)
-* [Sources](#sources)
-* [Licence](#licence)
+- [Ground station GUI for CanSat or OBC's](#ground-station-gui-for-cansat-or-obcs)
+  - [Table of contents](#table-of-contents)
+  - [Support](#support)
+  - [General info](#general-info)
+    - [Bugs](#bugs)
+  - [Technologies](#technologies)
+  - [Setup Linux](#setup-linux)
+  - [Setup Windows](#setup-windows)
+  - [How does it work?](#how-does-it-work)
+    - [How does it sample?](#how-does-it-sample)
+    - [What values uses?](#what-values-uses)
+    - [How does it store the information?](#how-does-it-store-the-information)
+  - [Sources](#sources)
+- [Licence](#licence)
 
 ___
 ## Support
@@ -85,11 +91,12 @@ The values it receives are:
 4. Atmospheric pressure
 5. Pitch
 6. Roll
-7. Yaw
+7. Yawow 
 8. Acceleration in X
 9. Y-axis acceleration
 10. Z-acceleration
 
+['111241', '906.89', '1', '32.42', '90897.00', '0.94', '348.13', '9.25', '0.15', '-1.57', '9.59', '0.00', '0.00']
 
 ### How does it store the information?
 Clicking on the **Start storage** button calls a function of the **data_base** class that changes a state that determines whether the `guardar` method writes the information in the list. The same happens with the **Stop storage** button.

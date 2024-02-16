@@ -31,12 +31,19 @@ class Communication:
             print(self.portName, " it's already closed")
 
     def getData(self):
-        if(self.dummyMode == False):
+        if(self.dummyMode):
+            print("hey, I'm reading data from the serial port")
+            self.ser.read_all()
+            print("supposedly I read something - 1")
             value = self.ser.readline()  # read line (single value) from the serial port
+            print("supposedly I read something")
+            print(value)
             decoded_bytes = str(value[0:len(value) - 2].decode("utf-8"))
-            # print(decoded_bytes)
+            print(decoded_bytes)
             value_chain = decoded_bytes.split(",")
+            print(value_chain)
         else:
+            print("dummy mode activated")
             value_chain = [0] + random.sample(range(0, 300), 1) + \
                 [random.getrandbits(1)] + random.sample(range(0, 20), 8)
         return value_chain
