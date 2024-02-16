@@ -47,6 +47,17 @@ class Communication:
             value_chain = [0] + random.sample(range(0, 300), 1) + \
                 [random.getrandbits(1)] + random.sample(range(0, 20), 8)
         return value_chain
+    
+    def sendData(self, command):
+        if self.dummyPlug:
+            print(f"Dummy mode: Sending command {command}")
+        else:
+            try:
+                self.ser.write(command.encode())  # Send command as bytes
+                print(f"Sent command: {command}")
+            except serial.serialutil.SerialException as e:
+                print(f"Failed to send command: {e}")
+
 
     def isOpen(self):
         return self.ser.isOpen()

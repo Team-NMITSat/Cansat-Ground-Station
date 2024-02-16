@@ -4,6 +4,7 @@ import pyqtgraph as pg
 from communication import Communication
 from dataBase import data_base
 from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QPushButton, QLineEdit
 from graphs.graph_acceleration import graph_acceleration
 from graphs.graph_altitude import graph_altitude
 from graphs.graph_battery import graph_battery
@@ -13,6 +14,7 @@ from graphs.graph_pressure import graph_pressure
 from graphs.graph_speed import graph_speed
 from graphs.graph_temperature import graph_temperature
 from graphs.graph_time import graph_time
+from command.CommandSenderWidget import CommandSenderWidget
 
 
 pg.setConfigOption('background', (33, 33, 33))
@@ -117,8 +119,17 @@ l2.addItem(battery)
 l2.nextRow()
 l2.addItem(free_fall)
 
-# you have to put the position of the CSV stored in the value_chain list
-# that represent the date you want to visualize
+def send_command(command):
+    ser.sendData(command)
+    print(f"Command to send: {command}")
+    command_sender_widget.clearInput()  # Clear the input after sending the command
+
+command_sender_widget = CommandSenderWidget(send_command)
+proxy = QtWidgets.QGraphicsProxyWidget()
+proxy.setWidget(command_sender_widget)
+l2.nextRow()
+Layout.addItem(proxy)
+
 def update():
     try:
         value_chain = []
