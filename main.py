@@ -14,7 +14,9 @@ from graphs.graph_pressure import graph_pressure
 from graphs.graph_speed import graph_speed
 from graphs.graph_temperature import graph_temperature
 from graphs.graph_time import graph_time
-from graphs.graph_ll import graph_ll
+from graphs.graph_lat import graph_lat
+from graphs.graph_long import graph_long
+from graphs.graph_date import graph_date
 from command.CommandSenderWidget import CommandSenderWidget
 
 pg.setConfigOption('background', (33, 33, 33))
@@ -77,9 +79,11 @@ battery = graph_battery(font=font)
 # Free fall graph
 free_fall = graph_free_fall(font=font)
 
-ll = graph_ll(font=font0)
+lat = graph_lat(font=font0)
 
-ll0  = graph_ll(font=font0)
+long  = graph_long(font=font0)
+
+date = graph_date(font=font0)
 
 ## Setting the graphs in the layout 
 # Title at top
@@ -119,15 +123,17 @@ l12.addItem(temperature)
 
 # Time, battery and free fall graphs
 l2 = Layout.addLayout(border=(83, 83, 83))
+l2.addItem(date)
+l2.nextRow()
 l2.addItem(time)
 l2.nextRow()
 l2.addItem(battery)
 l2.nextRow()
 l2.addItem(free_fall)
 l2.nextRow()
-l2.addItem(ll)
+l2.addItem(lat)
 l2.nextRow()
-l2.addItem(ll0)
+l2.addItem(long)
 
 def send_command(command):
     ser.sendData(command)
@@ -144,18 +150,17 @@ def update():
     try:
         value_chain = []
         value_chain = ser.getData()
-        value_chain[0] = 1
-        altitude.update(value_chain[3])
-        speed.update(value_chain[8], value_chain[9], value_chain[10])
-        time.update()
         acceleration.update(value_chain[0], value_chain[1], value_chain[2])
-        gyro.update(value_chain[6], value_chain[7], value_chain[8])
-        pressure.update(value_chain[5])
+        altitude.update(value_chain[3])
+        free_fall.update(value_chain[3])
         temperature.update(value_chain[4])
-        free_fall.update(value_chain[2])
-        battery.update("90")
-        ll.update(value_chain[9], value_chain[10])
-        ll0.update(value_chain[10], value_chain[10])
+        pressure.update(value_chain[5])
+        gyro.update(value_chain[6], value_chain[7], value_chain[8])
+        lat.update(value_chain[9])
+        long.update(value_chain[10])
+        speed.update(value_chain[8], value_chain[9], value_chain[10])
+        battery.update(value_chain[11])
+        time.update()
         data_base.guardar(value_chain)
     except IndexError:
         print('starting, please wait a moment')
