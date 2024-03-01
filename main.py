@@ -149,7 +149,8 @@ Layout.addItem(proxy)
 def update():
     try:
         value_chain = []
-        value_chain = ser.getData()
+        # value_chain = ser.getData()
+        value_chain = [0, 1,2,3,4,5,6,7,8,9,10,11,12]
         acceleration.update(value_chain[0], value_chain[1], value_chain[2])
         altitude.update(value_chain[3])
         free_fall.update(value_chain[3])

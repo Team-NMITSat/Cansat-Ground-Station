@@ -14,6 +14,6 @@ class graph_lat(pg.PlotItem):
         self.addItem(self.time_text)
 
 
-    def update(self, value, value0):
+    def update(self, value):
         self.time_text.setText('')
         self.time_text.setText(str(value))
