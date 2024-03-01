@@ -159,7 +159,8 @@ def update():
         lat.update(value_chain[9])
         long.update(value_chain[10])
         speed.update(value_chain[8], value_chain[9], value_chain[10])
-        battery.update(value_chain[11])
+        date.update(value_chain[11])
+        battery.update(value_chain[12])
         time.update()
         data_base.guardar(value_chain)
     except IndexError:
