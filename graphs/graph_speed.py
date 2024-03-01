@@ -29,5 +29,7 @@ class graph_speed(pg.PlotItem):
         self.vel_data[:-1] = self.vel_data[1:]
         self.vel_data[-1] = self.vel
         self.ptr += 1
+        # self.vel_plot.setData(self.vel_data)
+        # self.vel_plot.setPos(self.ptr, 0)
         self.vel_plot.setData(self.vel_data)
         self.vel_plot.setPos(self.ptr, 0)

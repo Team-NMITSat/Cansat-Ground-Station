@@ -14,8 +14,8 @@ from graphs.graph_pressure import graph_pressure
 from graphs.graph_speed import graph_speed
 from graphs.graph_temperature import graph_temperature
 from graphs.graph_time import graph_time
+from graphs.graph_ll import graph_ll
 from command.CommandSenderWidget import CommandSenderWidget
-
 
 pg.setConfigOption('background', (33, 33, 33))
 pg.setConfigOption('foreground', (197, 198, 199))
@@ -34,7 +34,10 @@ ser = Communication()
 data_base = data_base()
 # Fonts for text items
 font = QtGui.QFont()
-font.setPixelSize(90)
+font.setPixelSize(45)
+
+font0 = QtGui.QFont()
+font0.setPixelSize(30)
 
 # buttons style
 style = "background-color:rgb(29, 185, 84);color:rgb(0,0,0);font-size:14px;"
@@ -74,6 +77,9 @@ battery = graph_battery(font=font)
 # Free fall graph
 free_fall = graph_free_fall(font=font)
 
+ll = graph_ll(font=font0)
+
+ll0  = graph_ll(font=font0)
 
 ## Setting the graphs in the layout 
 # Title at top
@@ -118,6 +124,10 @@ l2.nextRow()
 l2.addItem(battery)
 l2.nextRow()
 l2.addItem(free_fall)
+l2.nextRow()
+l2.addItem(ll)
+l2.nextRow()
+l2.addItem(ll0)
 
 def send_command(command):
     ser.sendData(command)
@@ -134,15 +144,18 @@ def update():
     try:
         value_chain = []
         value_chain = ser.getData()
-        altitude.update(value_chain[1])
+        value_chain[0] = 1
+        altitude.update(value_chain[3])
         speed.update(value_chain[8], value_chain[9], value_chain[10])
-        time.update(value_chain[0])
-        acceleration.update(value_chain[8], value_chain[9], value_chain[10])
-        gyro.update(value_chain[5], value_chain[6], value_chain[7])
-        pressure.update(value_chain[4])
-        temperature.update(value_chain[3])
+        time.update()
+        acceleration.update(value_chain[0], value_chain[1], value_chain[2])
+        gyro.update(value_chain[6], value_chain[7], value_chain[8])
+        pressure.update(value_chain[5])
+        temperature.update(value_chain[4])
         free_fall.update(value_chain[2])
-        battery.update("65")
+        battery.update("90")
+        ll.update(value_chain[9], value_chain[10])
+        ll0.update(value_chain[10], value_chain[10])
         data_base.guardar(value_chain)
     except IndexError:
         print('starting, please wait a moment')
