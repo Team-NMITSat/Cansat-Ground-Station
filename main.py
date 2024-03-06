@@ -143,8 +143,49 @@ def send_command(command):
 command_sender_widget = CommandSenderWidget(send_command)
 proxy = QtWidgets.QGraphicsProxyWidget()
 proxy.setWidget(command_sender_widget)
+
 l2.nextRow()
 Layout.addItem(proxy)
+
+# Button to send 'a' and 'b' values
+send_ab_button = QtWidgets.QPushButton('Send a and b')
+send_ab_button.setStyleSheet(style)
+def send_ab():
+    command = "a,b"
+    ser.sendData(command)  
+send_ab_button.clicked.connect(send_ab)
+
+proxy3 = QtWidgets.QGraphicsProxyWidget()
+proxy3.setWidget(send_ab_button)
+Layout.nextRow()  # Ensure it's added on a new row
+Layout.addItem(proxy3)
+
+send_cd_button = QtWidgets.QPushButton('Send c and d')
+send_cd_button.setStyleSheet(style)
+def send_cd():
+    command = "a,b"
+    ser.sendData(command)  
+send_cd_button.clicked.connect(send_cd)
+
+proxy4 = QtWidgets.QGraphicsProxyWidget()
+proxy4.setWidget(send_cd_button)
+Layout.nextRow()  # Ensure it's added on a new row
+Layout.addItem(proxy4)
+
+send_ef_button = QtWidgets.QPushButton('Send e and f')
+send_ef_button.setStyleSheet(style)
+def send_ef():
+    command = "a,b"
+    print(f"Command to send: {command}")
+    ser.sendData(command)  
+    print(f"Command to send: {command}")
+send_ef_button.clicked.connect(send_ef)
+
+proxy5 = QtWidgets.QGraphicsProxyWidget()
+proxy5.setWidget(send_ef_button)
+Layout.nextRow()  # Ensure it's added on a new row
+Layout.addItem(proxy5)
+
 
 def update():
     try:
