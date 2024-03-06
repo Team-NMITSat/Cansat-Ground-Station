@@ -149,8 +149,8 @@ Layout.addItem(proxy)
 def update():
     try:
         value_chain = []
-        # value_chain = ser.getData()
-        value_chain = [0, 1,2,3,4,5,6,7,8,9,10,11,12]
+        value_chain = ser.getData()
+        #value_chain = [0, 1,2,3,4,5,6,7,8,9,10,11,12,13]
         acceleration.update(value_chain[0], value_chain[1], value_chain[2])
         altitude.update(value_chain[3])
         free_fall.update(value_chain[3])
@@ -159,9 +159,9 @@ def update():
         gyro.update(value_chain[6], value_chain[7], value_chain[8])
         lat.update(value_chain[9])
         long.update(value_chain[10])
-        speed.update(value_chain[8], value_chain[9], value_chain[10])
         date.update(value_chain[11])
         battery.update(value_chain[12])
+        speed.update(value_chain[13])
         time.update()
         data_base.guardar(value_chain)
     except IndexError:
