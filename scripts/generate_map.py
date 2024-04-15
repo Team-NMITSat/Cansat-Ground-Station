@@ -31,10 +31,10 @@ def create_map_and_save_image(output_dir='generated_graphs', output_file='map_im
     os.makedirs(output_dir, exist_ok=True)
 
     # Create a map centered around the first coordinate
-    map_obj = folium.Map(location=coordinates[0], zoom_start=16)
+    map_obj = folium.Map(location=coordinates[0], zoom_start=13)
     
     # Add a line to the map with the coordinates
-    folium.PolyLine(coordinates, color='blue', weight=5).add_to(map_obj)
+    folium.PolyLine(coordinates, color='red', weight=5).add_to(map_obj)
     
     # Temporary path for the HTML file
     temp_html = os.path.join(output_dir, 'temp_map.html')
