@@ -31,7 +31,7 @@ class Communication:
             print(self.portName, " it's already closed")
 
     def getData(self):
-        if(self.dummyMode):
+        if(not self.dummyMode):
             print("hey, I'm reading data from the serial port")
             self.ser.read_all()
             print("supposedly I read something - 1")
@@ -45,7 +45,7 @@ class Communication:
         else:
             print("dummy mode activated")
             value_chain = [0] + random.sample(range(0, 300), 1) + \
-                [random.getrandbits(1)] + random.sample(range(0, 20), 8)
+                [random.getrandbits(1)] + random.sample(range(0, 20), 13)
         return value_chain
     
     def sendData(self, command):

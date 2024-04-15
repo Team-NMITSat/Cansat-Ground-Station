@@ -10,6 +10,8 @@ class graph_altitude(pg.PlotItem):
         self.ptr1 = 0
 
     def update(self, value):
+        # convert meter to feet
+        value = float(value) * 3.28084
         #self.altitude_plot, self.altitude_data,  self.ptr1
         self.altitude_data[:-1] = self.altitude_data[1:]
         self.altitude_data[-1] = float(value)

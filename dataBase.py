@@ -1,6 +1,6 @@
 import time
 import csv
-
+from scripts.generate_map import create_map_and_save_image
 
 class data_base():
     def __init__(self):
@@ -19,4 +19,5 @@ class data_base():
 
     def stop(self):
         self.state = False
+        create_map_and_save_image()
         print('stopping storage in csv')
