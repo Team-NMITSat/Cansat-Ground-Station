@@ -53,12 +53,6 @@ def create_map_and_save_image(output_dir='generated_graphs', output_file='map_im
     # Ensure output directory exists
     os.makedirs(output_dir, exist_ok=True)
 
-    coordinates = [
-    (13.127754, 77.587650),  # Location 1
-    (13.130400, 77.586800),  # Location 2
-    (13.132350, 77.589095)   # Location 3
-]
-
     # Create a map centered around the first coordinate
     map_obj = folium.Map(location=coordinates[0], zoom_start=13)
     
@@ -102,5 +96,3 @@ def create_map_and_save_image(output_dir='generated_graphs', output_file='map_im
     os.remove(temp_html)  # Remove temporary HTML file
     
     print(f"Map image saved as {output_path}")
-
-create_map_and_save_image()
