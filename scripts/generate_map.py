@@ -3,6 +3,29 @@ import os
 import time
 import csv
 from selenium import webdriver
+import math
+
+from PIL import Image, ImageDraw, ImageFont
+
+from PIL import Image, ImageDraw, ImageFont
+
+def haversine(coord1, coord2):
+    """
+    Calculate the great circle distance in kilometers between two points 
+    on the earth (specified in decimal degrees)
+    """
+    # Convert decimal degrees to radians
+    lat1, lon1 = coord1
+    lat2, lon2 = coord2
+    lat1, lon1, lat2, lon2 = map(math.radians, [lat1, lon1, lat2, lon2])
+
+    # Haversine formula
+    dlat = lat2 - lat1
+    dlon = lon2 - lon1
+    a = math.sin(dlat/2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon/2)**2
+    c = 2 * math.asin(math.sqrt(a))
+    r = 6371  # Radius of Earth in kilometers
+    return c * r
 
 def create_map_and_save_image(output_dir='generated_graphs', output_file='map_image.png'):
     """
@@ -30,11 +53,19 @@ def create_map_and_save_image(output_dir='generated_graphs', output_file='map_im
     # Ensure output directory exists
     os.makedirs(output_dir, exist_ok=True)
 
+    coordinates = [
+    (13.127754, 77.587650),  # Location 1
+    (13.130400, 77.586800),  # Location 2
+    (13.132350, 77.589095)   # Location 3
+]
+
     # Create a map centered around the first coordinate
     map_obj = folium.Map(location=coordinates[0], zoom_start=13)
     
     # Add a line to the map with the coordinates
-    folium.PolyLine(coordinates, color='red', weight=5).add_to(map_obj)
+    folium.PolyLine(coordinates, color='red', weight=1).add_to(map_obj)
+    # add a line b/w the first and last point
+    folium.PolyLine([coordinates[0], coordinates[-1]], color='blue', weight=1).add_to(map_obj)
     
     # Temporary path for the HTML file
     temp_html = os.path.join(output_dir, 'temp_map.html')
@@ -59,8 +90,17 @@ def create_map_and_save_image(output_dir='generated_graphs', output_file='map_im
     output_path = os.path.join(output_dir, output_file)
     driver.save_screenshot(output_path)
 
+    total_distance = sum(haversine(coordinates[i], coordinates[i + 1]) for i in range(len(coordinates) - 1)) 
+    direct_displacement = haversine(coordinates[0], coordinates[-1]) if len(coordinates) > 1 else 0
+    
+    # Print or return distances as needed
+    print(f"Total travel distance: {total_distance:.2f} km")
+    print(f"Direct displacement: {direct_displacement:.2f} km")
+
     # Close the browser and clean up
     driver.quit()
     os.remove(temp_html)  # Remove temporary HTML file
     
     print(f"Map image saved as {output_path}")
+
+create_map_and_save_image()
