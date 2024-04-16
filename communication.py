@@ -11,7 +11,7 @@ class Communication:
     ser = serial.Serial()
 
     def __init__(self):
-        self.baudrate = 9600
+        self.baudrate = 115200
         print("the available ports are (if none appear, press any letter): ")
         for port in sorted(self.ports):
             # obtener la lista de puetos: https://stackoverflow.com/a/52809180
@@ -31,7 +31,7 @@ class Communication:
             print(self.portName, " it's already closed")
 
     def getData(self):
-        if(not self.dummyMode):
+        if(True):
             print("hey, I'm reading data from the serial port")
             self.ser.read_all()
             print("supposedly I read something - 1")
