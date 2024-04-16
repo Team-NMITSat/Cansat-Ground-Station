@@ -10,7 +10,7 @@ class data_base():
     def guardar(self, data):
         if self.state == True:
             data.append(time.asctime())
-            with open("flight_data.csv", "a") as f:
+            with open("flight_data.csv", "a",newline='') as f:
                 writer = csv.writer(f, delimiter=",")
                 writer.writerow(data)
 
@@ -20,6 +20,7 @@ class data_base():
 
     def stop(self):
         self.state = False
+        time.sleep(2)
         create_map_and_save_image()
         create_graphs_save_images()
         print('stopping storage in csv')
