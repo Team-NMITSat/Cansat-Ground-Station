@@ -20,6 +20,7 @@ class data_base():
 
     def stop(self):
         self.state = False
+        time.sleep(2)
         create_map_and_save_image()
         create_graphs_save_images()
         print('stopping storage in csv')

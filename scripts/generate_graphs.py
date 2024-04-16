@@ -99,12 +99,19 @@ def create_graphs_save_images():
     axs[0, 0].set_xlabel('Time')
     axs[2, 0].legend()
 
-    # Optionally, hide the unused plots
-    axs[2, 1].axis('off')
-    axs[2, 2].axis('off')
+    axs[2, 1].scatter(altitude, pressure, color='blue', label='Pressure vs Altitude')
+    axs[2, 1].set_xlabel('Altitude (m)')
+    axs[2, 1].set_ylabel('Pressure (Pa)')
+    axs[2, 1].set_title('Pressure vs Altitude')
+    axs[2, 1].legend()
+
+    # Temperature vs Altitude
+    axs[2, 2].scatter(altitude, temp, color='red', label='Temperature vs Altitude')
+    axs[2, 2].set_xlabel('Altitude (m)')
+    axs[2, 2].set_ylabel('Temperature (C)')
+    axs[2, 2].set_title('Temperature vs Altitude')
+    axs[2, 2].legend()
 
     # Adjust layout and save the combined plot
     plt.tight_layout()
     plt.savefig(BASE_DIR + 'combined_plots.png')
-
-create_graphs_save_images()

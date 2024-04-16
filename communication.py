@@ -45,7 +45,7 @@ class Communication:
         else:
             print("dummy mode activated")
             value_chain = [0] + random.sample(range(0, 300), 1) + \
-                [random.getrandbits(1)] + random.sample(range(0, 20), 13)
+                [random.getrandbits(1)] + random.sample(range(0, 20), 15)
         return value_chain
     
     def sendData(self, command):

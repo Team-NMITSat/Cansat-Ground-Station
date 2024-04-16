@@ -17,10 +17,14 @@ from graphs.graph_time import graph_time
 from graphs.graph_lat import graph_lat
 from graphs.graph_long import graph_long
 from graphs.graph_date import graph_date
-from command.CommandSenderWidget import CommandSenderWidget
+from graphs.graph_humidity import graph_humidity
+from graphs.graph_gas import graph_gas
 
-pg.setConfigOption('background', (33, 33, 33))
-pg.setConfigOption('foreground', (197, 198, 199))
+# The background color uses RGBA format (Red, Green, Blue, Alpha)
+pg.setConfigOption('background', (226, 237, 66, 1.0))  # Vibrant yellow with some transparency
+
+# Set the foreground color, usually for text and lines
+pg.setConfigOption('foreground', (197, 198, 199))  # Light grey color
 # Interface variables
 app = QtWidgets.QApplication(sys.argv)
 view = pg.GraphicsView()
@@ -36,10 +40,10 @@ ser = Communication()
 data_base = data_base()
 # Fonts for text items
 font = QtGui.QFont()
-font.setPixelSize(45)
+font.setPixelSize(25)
 
 font0 = QtGui.QFont()
-font0.setPixelSize(30)
+font0.setPixelSize(25)
 
 # buttons style
 style = "background-color:rgb(29, 185, 84);color:rgb(0,0,0);font-size:14px;"
@@ -79,24 +83,24 @@ battery = graph_battery(font=font)
 # Free fall graph
 free_fall = graph_free_fall(font=font)
 
+# Humidity graph
+humidity = graph_humidity(font=font0)
+
 lat = graph_lat(font=font0)
 
 long  = graph_long(font=font0)
 
 date = graph_date(font=font0)
 
+gas = graph_gas(font=font0)
+
 ## Setting the graphs in the layout 
 # Title at top
 text = """
 Team NMITSat
 """
-Layout.addLabel(text, col=1, colspan=21)
+Layout.addLabel(text, col=2, colspan=21)
 Layout.nextRow()
-
-# Put vertical label on left side
-Layout.addLabel('labs',
-                angle=-90, rowspan=3)
-                
 Layout.nextRow()
 
 lb = Layout.addLayout(colspan=21)
@@ -112,17 +116,18 @@ l11 = l1.addLayout(rowspan=1, border=(83, 83, 83))
 # Altitude, speed
 l11.addItem(altitude)
 l11.addItem(speed)
+l11.addItem(gyro)
 l1.nextRow()
 
 # Acceleration, gyro, pressure, temperature
 l12 = l1.addLayout(rowspan=1, border=(83, 83, 83))
 l12.addItem(acceleration)
-l12.addItem(gyro)
+l12.addItem(humidity)
 l12.addItem(pressure)
 l12.addItem(temperature)
 
 # Time, battery and free fall graphs
-l2 = Layout.addLayout(border=(83, 83, 83))
+l2 = Layout.addLayout(border=(20, 20, 20))
 l2.addItem(date)
 l2.nextRow()
 l2.addItem(time)
@@ -134,58 +139,32 @@ l2.nextRow()
 l2.addItem(lat)
 l2.nextRow()
 l2.addItem(long)
+l2.nextRow()
+l2.addItem(gas)
 
 def send_command(command):
     ser.sendData(command)
     print(f"Command to send: {command}")
-    command_sender_widget.clearInput()  # Clear the input after sending the command
 
-command_sender_widget = CommandSenderWidget(send_command)
-proxy = QtWidgets.QGraphicsProxyWidget()
-proxy.setWidget(command_sender_widget)
-
-l2.nextRow()
-Layout.addItem(proxy)
-
-# Button to send 'a' and 'b' values
-send_ab_button = QtWidgets.QPushButton('Send a and b')
+# Create proxy and button for "Cam Start"
+send_ab_button = QtWidgets.QPushButton('Cam Start')
 send_ab_button.setStyleSheet(style)
-def send_ab():
-    command = "a,b"
-    ser.sendData(command)  
-send_ab_button.clicked.connect(send_ab)
-
+send_ab_button.clicked.connect(lambda: ser.sendData("a,b"))
 proxy3 = QtWidgets.QGraphicsProxyWidget()
 proxy3.setWidget(send_ab_button)
-Layout.nextRow()  # Ensure it's added on a new row
+Layout.nextRow()
 Layout.addItem(proxy3)
 
-send_cd_button = QtWidgets.QPushButton('Send c and d')
-send_cd_button.setStyleSheet(style)
-def send_cd():
-    command = "a,b"
-    ser.sendData(command)  
-send_cd_button.clicked.connect(send_cd)
+# Move to the next row for the next button
+Layout.nextRow()
 
+# Create proxy and button for "Cam End"
+send_cd_button = QtWidgets.QPushButton('Cam End')
+send_cd_button.setStyleSheet(style)
+send_cd_button.clicked.connect(lambda: ser.sendData("c,d"))
 proxy4 = QtWidgets.QGraphicsProxyWidget()
 proxy4.setWidget(send_cd_button)
-Layout.nextRow()  # Ensure it's added on a new row
 Layout.addItem(proxy4)
-
-send_ef_button = QtWidgets.QPushButton('Send e and f')
-send_ef_button.setStyleSheet(style)
-def send_ef():
-    command = "a,b"
-    print(f"Command to send: {command}")
-    ser.sendData(command)  
-    print(f"Command to send: {command}")
-send_ef_button.clicked.connect(send_ef)
-
-proxy5 = QtWidgets.QGraphicsProxyWidget()
-proxy5.setWidget(send_ef_button)
-Layout.nextRow()  # Ensure it's added on a new row
-Layout.addItem(proxy5)
-
 
 def update():
     try:
@@ -203,6 +182,8 @@ def update():
         date.update(value_chain[11])
         battery.update(value_chain[12])
         speed.update(value_chain[13])
+        humidity.update(value_chain[14])
+        gas.update(value_chain[15])
         time.update()
         data_base.guardar(value_chain)
     except IndexError:
